@@ -1,4 +1,3 @@
-const { v4: uuidv4 } = require('uuid');
 const consola = require('consola');
 const ds18b20 = require('./lib/ds18b20');
 
@@ -15,22 +14,6 @@ if (!process.env.INTERVAL) {
   process.exit(1);
 }
 
-// eslint-disable-next-line no-unused-vars
-const dummyGetReadings = () => {
-  return [
-    {
-      sensorId: uuidv4(),
-      value: 99.99,
-      units: 'C',
-    },
-  ];
-};
-
-// eslint-disable-next-line no-unused-vars
-const getReadings = () => {
-  return ds18b20.getAllTemperatureSync();
-};
-
 // ------------------------------------------------------------------------------------
 const main = async () => {
   try {
@@ -41,23 +24,18 @@ const main = async () => {
     process.exit(1);
   }
 
-  let counter = 0;
+  const sensors = ds18b20.getSensorsSync();
+  const results = ds18b20.getAllTemperatureSync(sensors);
 
-  const intervalObj = setInterval(async () => {
-    counter += 1;
-
-    const result = getReadings();
-
-    result.map(async (value) => {
-      await db.Reading.create(value, { isNewRecord: true }).catch((err) => {
-        consola.error(err);
-      });
+  results.map(async (result) => {
+    consola.info(`SensorId: ${result.sensorId} Value: ${result.value} ${result.units}`);
+    await db.Reading.create(result, {
+      isNewRecord: true,
+      logging: process.env.NODE_ENV === 'production' ? false : consola.log,
+    }).catch((err) => {
+      consola.error(err);
     });
-
-    if (counter > 10) {
-      clearInterval(intervalObj);
-    }
-  }, process.env.INTERVAL);
+  });
 };
 
 main();

@@ -26,10 +26,11 @@
   "dependencies": {
     "consola": "^2.15.3",
     "dotenv": "^16.0.0",
+    "fs-extra": "^10.1.0",
     "glob": "^8.0.1",
+    "promise-retry": "^2.0.1",
     "sequelize": "^6.19.0",
-    "sqlite3": "^5.0.4",
-    "uuid": "^8.3.2"
+    "sqlite3": "^5.0.4"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",
