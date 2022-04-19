@@ -17,8 +17,10 @@ if (!process.env.INTERVAL) {
 // ------------------------------------------------------------------------------------
 const main = async () => {
   try {
-    await db.sequelize.authenticate();
-    consola.log('Connection has been established successfully.');
+    await db.sequelize.authenticate({
+      logging: process.env.NODE_ENV === 'production' ? false : consola.log,
+    });
+    consola.log(`Connection has been established successfully. SQLITE3 DB: ${db.config.storage}`);
   } catch (error) {
     consola.error('Unable to connect to the database:', error);
     process.exit(1);
@@ -32,9 +34,13 @@ const main = async () => {
     await db.Reading.create(result, {
       isNewRecord: true,
       logging: process.env.NODE_ENV === 'production' ? false : consola.log,
-    }).catch((err) => {
-      consola.error(err);
-    });
+    })
+      .then(() => {
+        db.sequelize.close();
+      })
+      .catch((err) => {
+        consola.error(err);
+      });
   });
 };
 
