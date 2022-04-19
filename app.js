@@ -6,14 +6,6 @@ const db = require('./models');
 
 require('dotenv').config();
 
-// Check the environment variables are configured in the .env file
-if (!process.env.INTERVAL) {
-  consola.error(
-    'Missing critical env vars. Make sure all variables are defined in .env file. Aborting. '
-  );
-  process.exit(1);
-}
-
 // ------------------------------------------------------------------------------------
 const main = async () => {
   try {
