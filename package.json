@@ -13,8 +13,8 @@
     "email": "12408585+martinholden-skillsoft@users.noreply.github.com"
   },
   "scripts": {
-    "initdb:prod": "rimraf ./data/database.sqlite3 && nodetouch ./data/database.sqlite3 && sequelize db:migrate",
-    "initdb:dev": "rimraf ./data/database_dev.sqlite3 && nodetouch ./data/database.sqlite3 && sequelize db:migrate",
+    "initdb:prod": "export NODE_ENV=production && rimraf ./data/database.sqlite3 && nodetouch ./data/database.sqlite3 && sequelize db:migrate",
+    "initdb:dev": "export NODE_ENV=development && rimraf ./data/database_dev.sqlite3 && nodetouch ./data/database.sqlite3 && sequelize db:migrate",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./app.js",
     "lint": "eslint **/*.js",

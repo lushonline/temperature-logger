@@ -25,13 +25,9 @@ const main = async () => {
     await db.Reading.create(result, {
       isNewRecord: true,
       logging: process.env.NODE_ENV === 'production' ? false : consola.log,
-    })
-      .then(() => {
-        db.sequelize.close();
-      })
-      .catch((err) => {
-        consola.error(err);
-      });
+    }).catch((err) => {
+      consola.error(err);
+    });
   });
 };
 
