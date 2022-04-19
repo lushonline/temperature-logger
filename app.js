@@ -1,10 +1,9 @@
+require('dotenv').config();
 const consola = require('consola');
 const ds18b20 = require('./lib/ds18b20');
 
 // models
 const db = require('./models');
-
-require('dotenv').config();
 
 // ------------------------------------------------------------------------------------
 const main = async () => {
